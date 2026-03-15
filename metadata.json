@@ -1,0 +1,5 @@
+{
+  "name": "GenAI LinkedIn Poster",
+  "description": "Scan the latest GenAI developments, generate LinkedIn posts with images, and publish them directly.",
+  "requestFramePermissions": []
+}
