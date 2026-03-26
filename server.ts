@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
@@ -113,37 +114,96 @@ async function generateAndPostToLinkedIn() {
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
     
     // Rotate topics based on the day of the week to ensure variety
-    const topics = [
-      "AI Agents and Multi-Agent Systems",
-      "Advances in Multimodal Foundation Models",
-      "AI in Healthcare and Scientific Discovery",
-      "Efficient AI: Quantization and Small Language Models (SLMs)",
-      "AI Alignment, Safety, and Interpretability",
-      "Retrieval-Augmented Generation (RAG) and Long-Context Models",
-      "Generative Video, Audio, and 3D Models",
-      "World Models and Embodied AI",
-      "Synthetic Data Generation and Data-Centric AI",
-      "AI for Code Generation and Autonomous Software Engineering",
-      "Continual Learning and Lifelong Foundation Models",
-      "Neuro-Symbolic AI and Hybrid Reasoning Systems",
-      "Memory-Augmented AI Systems",
-      "AI-Native Operating Systems and Tool Use",
-      "Diffusion Models and Next-Generation Generative Architectures",
-      "Edge AI and On-Device Generative Models",
-      "AI Evaluation, Benchmarking, and Robustness",
-    ];
-    // Use day of year to cycle through all 17 topics instead of just day of week
-    const start = new Date(new Date().getFullYear(), 0, 0);
-    const diff = new Date().getTime() - start.getTime();
-    const oneDay = 1000 * 60 * 60 * 24;
-    const dayOfYear = Math.floor(diff / oneDay);
-    const selectedTopic = topics[dayOfYear % topics.length];
 
+
+const topics = [
+  "Why single LLM apps are dead: the rise of multi-agent systems",
+  "From copilots to autonomous workflows: where agents actually deliver ROI",
+  "The architecture of production-grade agentic systems beyond demos",
+  "Why orchestration layers are becoming the new backend",
+  "Memory in AI systems: the real bottleneck nobody solved yet",
+  "Context engineering vs prompt engineering: the real shift happening now",
+  "Why most AI agents fail after demo day",
+  "Human-in-the-loop is not optional: designing controllable AI systems",
+
+  "Do large context windows (1M+ tokens) really eliminate RAG?",
+  "Why retrieval is evolving into context streaming architectures",
+  "The tradeoff triangle: latency vs cost vs intelligence in LLM systems",
+  "Small models with smart pipelines vs giant models: what actually wins",
+  "The emergence of reasoning models vs generative models",
+  "Synthetic data: the next scaling frontier after internet data",
+
+  "Why most enterprise GenAI POCs never reach production",
+  "The hidden cost of maintaining AI systems in production",
+  "Build vs buy vs orchestrate: the new enterprise AI decision framework",
+  "AI governance is becoming a product problem, not just a policy problem",
+  "Why enterprise AI success depends more on workflows than models",
+  "The rise of internal AI platforms and why every large company is building one",
+
+  "The shift from writing code to supervising code generation systems",
+  "Multi-file, repo-level reasoning: how AI coding is actually evolving",
+  "Why IDEs are becoming AI-native operating systems for developers",
+  "The end of traditional code reviews: AI as the first reviewer",
+  "Context-aware coding agents vs autocomplete: the real leap",
+
+  "Open-weight models vs API models: the real enterprise tipping point",
+  "Why open-source AI is accelerating faster than expected",
+  "The fragmentation of AI tooling: too many frameworks, no standards",
+
+  "The productivity paradox: why AI doesn’t always translate to business value",
+  "AI-first startups vs AI-enabled enterprises: who has the advantage"
+];
+
+    // UNUSED - Date modulo topic count to ensure a different topic each day, cycling through the list
+    // // Use day of year to cycle through all 17 topics instead of just day of week
+    // const start = new Date(new Date().getFullYear(), 0, 0);
+    // const diff = new Date().getTime() - start.getTime();
+    // const oneDay = 1000 * 60 * 60 * 24;
+    // const dayOfYear = Math.floor(diff / oneDay);
+    // const selectedTopic = topics[dayOfYear % topics.length];
+
+    // Randomly select a topic from the list to ensure more variety in posts, especially if the server restarts or if there are multiple posts in a day
+    // Generates a random index between 0 and topics.length - 1
+    const randomIndex = Math.floor(Math.random() * topics.length);
+    const selectedTopic = topics[randomIndex];
+
+    // Changing this static prompting logic with more dynamic 
+    // let prompt = `Search the internet for recent research progress, breakthroughs, and deep-dive insights regarding "${selectedTopic}" in the field of AI and Generative AI. `;
+    // if (data.sources && data.sources.length > 0) {
+    //   prompt += `Focus specifically on insights from these sources or related to these keywords: ${data.sources.join(', ')}. `;
+    // }
+
+    // prompt += `Write a highly engaging, viral-style LinkedIn post about this specific topic for a general tech and business audience. Follow these strict formatting rules: 1. Start with a strong, contrarian, or curiosity-inducing hook. 2. Keep it concise and highly readable (short paragraphs of 1-2 sentences). 3. FORMATTING IS CRITICAL: LinkedIn does NOT support markdown asterisks (**). Do NOT use asterisks to emphasize important terms. 4. Use emojis as bullet points to break up the text visually. 5. Focus on relatable realities, actionable insights, or thought-provoking perspectives rather than deep technical jargon. 6. End with a specific, thought-provoking question to drive comments. 7. Include 3-5 relevant hashtags. 8. Do NOT include any introductory or concluding remarks. 9. use relevant emoji icon at the start of the title of the post. 10. make required variation in the format of the posts to avoide them feeling typecasted. IMPORTANT: The entire post MUST be strictly under 1500 characters. and Do not always mention like - In year 2026 or biggest thing of 2026 use the year number only when utmost necessory`;
+    
     let prompt = `Search the internet for recent research progress, breakthroughs, and deep-dive insights regarding "${selectedTopic}" in the field of AI and Generative AI. `;
+
     if (data.sources && data.sources.length > 0) {
-      prompt += `Focus specifically on insights from these sources or related to these keywords: ${data.sources.join(', ')}. `;
+        prompt += `Focus specifically on insights from these sources or related to these keywords: ${data.sources.join(', ')}. `;
     }
-    prompt += `Write an engaging, professional, and analytical LinkedIn post that goes deep into this specific topic. Do NOT write a generic news bulletin or a simple list of links. Instead, focus on the technical progress, real-world implications, and future potential of this specific area. Make it thought-provoking and insightful for an audience of tech professionals. Include relevant hashtags. Do not include any introductory or concluding remarks, just the post content itself.`;
+
+    prompt += `
+    ---
+    ### STRATEGY PHASE
+    Before writing, analyze the research findings and select the most relevant 'Post Archetype' from the list below to maximize engagement for this specific insight:
+
+    1. **The Contrarian**: Challenge a popular industry myth or a common AI "hype" narrative.
+    2. **The Narrative**: Start with a small, relatable observation and zoom out to the massive industry implication.
+    3. **The Comparison**: Compare the "Legacy/Manual" way of working vs. the "AI-Augmented" future.
+    4. **The Practitioner’s Playbook**: Provide a logical, step-by-step mental model for applying this research.
+    5. **The Visionary**: Focus entirely on how this breakthrough changes the world 2-5 years from now.
+
+    ### EXECUTION PHASE
+    Write a highly engaging LinkedIn post based on the selected archetype. Follow these strict rules:
+
+    1. **DYNAMIC FLOW**: Avoid "typecasted" patterns. Do not always use a list. Use a mix of short, punchy sentences and flowing, insightful observations.
+    2. **NO MARKDOWN**: LinkedIn does NOT support asterisks (**). Do NOT use them for bolding. Use ALL CAPS for emphasis very sparingly.
+    3. **VISUALS**: Use a relevant emoji at the start of the title. Use emojis naturally to break up text, but only use them as bullet points if the 'Playbook' style is chosen.
+    4. **FORMAT**: Keep paragraphs to 1-2 sentences. Ensure the structure feels organic and human-written.
+    5. **CONSTRAINTS**: Under 1500 characters. No "intro" or "conclusion" filler text. Use the year 2026 only if absolutely necessary for context.
+    6. **HOOK & CTA**: Start with a curiosity-inducing hook. End with a specific, thought-provoking question to drive comments.
+    7. **HASHTAGS**: Include 3-5 relevant hashtags at the very end.
+    `;
+
 
     console.log(`Auto-post: Generating text for topic: ${selectedTopic}...`);
     const textResponse = await ai.models.generateContent({
@@ -151,12 +211,30 @@ async function generateAndPostToLinkedIn() {
       contents: prompt,
       config: { tools: [{ googleSearch: {} }] }
     });
+    
     const text = textResponse.text;
 
     if (!text) throw new Error("Failed to generate text");
 
+    // Safety net: LinkedIn has a hard limit of 3000 characters.
+    if (text.length > 2950) {
+      console.log(`Auto-post: Text was ${text.length} chars, truncating to 2950 to fit LinkedIn limits.`);
+      text = text.substring(0, 2950) + "...";
+    }
+
     console.log("Auto-post: Generating image...");
-    const imagePrompt = `An engaging, professional, high-quality conceptual illustration for a LinkedIn post about ${selectedTopic}. The post discusses: ${text.substring(0, 150)}... Make it visually striking, modern, and relevant to AI research.`;
+    // const imagePrompt = `An engaging, professional, high-quality conceptual illustration for a LinkedIn post about ${selectedTopic}. The post discusses: ${text.substring(0, 150)}... Make it visually striking, modern, and relevant to AI research.`;
+    const imagePrompt = `A professional, high-quality conceptual technical illustration for a LinkedIn post about ${selectedTopic}. 
+    The post discusses: ${text.substring(0, 500)}... 
+
+    ### Visual Instructions:
+    - **Style:** Clean, minimalist, modern technical aesthetic. Think high-end corporate infographic, not sci-fi.
+    - **Lighting:** Bright, well-lit, natural light studio setting. Crisp details.
+    - **Background:** Clean, neutral background (pure white, very light gray, or light pastel gradient). No dark environments or heavy bokeh.
+    - **Color Palette:** Professional and light. Use blues, greens, and grays with subtle accents of primary colors. Avoid oversaturated neons or "glowing" effects.
+    - **Composition:** Use precise lines, isometric view, or a clean diagrammatic layout. Visualize the AI concepts (like neural networks, data flow, or algorithms) as elegant, structured blueprints or transparent interfaces.
+    `;
+
     const imageResponse = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
       contents: { parts: [{ text: imagePrompt }] }
@@ -180,11 +258,16 @@ async function generateAndPostToLinkedIn() {
   }
 }
 
-// Schedule cron job for 10:00 AM IST (04:30 AM UTC)
-cron.schedule("30 4 * * *", () => {
-  console.log("Running scheduled LinkedIn post (10 AM IST)");
-  generateAndPostToLinkedIn();
-});
+
+// // Schedule cron job for 7:00 PM IST explicitly, regardless of server timezone
+// cron.schedule("0 19 * * *", () => {
+//   console.log("Running scheduled LinkedIn post (7:00 PM IST)");
+//   generateAndPostToLinkedIn();
+// }, {
+//   timezone: "Asia/Kolkata"
+// });
+
+
 
 async function startServer() {
   const app = express();
@@ -193,6 +276,28 @@ async function startServer() {
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   app.use(cookieParser());
+
+// Simple Basic Auth Middleware to secure the Web UI
+  app.use((req, res, next) => {
+    // Exclude the cron trigger endpoint (it uses CRON_SECRET instead)
+    if (req.path === '/api/cron/trigger') {
+      return next();
+    }
+
+    const b64auth = (req.headers.authorization || '').split(' ')[1] || '';
+    const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':');
+
+    const expectedUser = 'ashutoshdon13@5';
+    const expectedPass = 'Digit@l5924#';
+
+    if (login && password && login === expectedUser && password === expectedPass) {
+      return next();
+    }
+
+    res.set('WWW-Authenticate', 'Basic realm="LinkedIn Bot Admin"');
+    res.status(401).send('Authentication required.');
+  });
+
 
   // API routes
   app.get("/api/health", (req, res) => {

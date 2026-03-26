@@ -36,32 +36,36 @@ export default function PostGenerator({ sources, isAuthenticated }: PostGenerato
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
       
-      const topics = [
-        "AI Agents and Multi-Agent Systems",
-        "Advances in Multimodal Foundation Models",
-        "AI in Healthcare and Scientific Discovery",
-        "Efficient AI: Quantization and Small Language Models (SLMs)",
-        "AI Alignment, Safety, and Interpretability",
-        "Retrieval-Augmented Generation (RAG) and Long-Context Models",
-        "Generative Video, Audio, and 3D Models",
-        "World Models and Embodied AI",
-        "Synthetic Data Generation and Data-Centric AI",
-        "AI for Code Generation and Autonomous Software Engineering",
-        "Continual Learning and Lifelong Foundation Models",
-        "Neuro-Symbolic AI and Hybrid Reasoning Systems",
-        "Memory-Augmented AI Systems",
-        "AI-Native Operating Systems and Tool Use",
-        "Diffusion Models and Next-Generation Generative Architectures",
-        "Edge AI and On-Device Generative Models",
-        "AI Evaluation, Benchmarking, and Robustness",
-      ];
+    const topics = [
+      "The reality of AI replacing jobs vs. augmenting them",
+      "Why most enterprise AI projects fail in production",
+      "The hidden environmental and compute costs of Generative AI",
+      "How AI is changing the daily life of software engineers",
+      "The truth about 'AGI' timelines and industry hype",
+      "Practical AI use cases that actually save time today",
+      "The impact of AI on junior developers and entry-level tech jobs",
+      "Data privacy and security realities in the age of LLMs",
+      "Open Source AI vs. Closed Models: Who is winning?",
+      "The shift from building apps to building AI agents",
+      "Burnout and the fast-paced reality of the tech industry",
+      "How non-technical founders are building tech companies with AI",
+      "The future of remote work and asynchronous tech teams",
+      "Why soft skills are becoming more important than coding skills",
+      "The biggest misconceptions people have about Generative AI",
+      "How AI is transforming education and continuous learning in tech",
+      "The ethical dilemmas tech companies are facing right now",
+    ];
+
+
+
       const selectedTopic = topics[Math.floor(Math.random() * topics.length)];
 
       let prompt = `Search the internet for recent research progress, breakthroughs, and deep-dive insights regarding "${selectedTopic}" in the field of AI and Generative AI. `;
       if (sources.length > 0) {
         prompt += `Focus specifically on insights from these sources or related to these keywords: ${sources.join(', ')}. `;
       }
-      prompt += `Write an engaging, professional, and analytical LinkedIn post that goes deep into this specific topic. Do NOT write a generic news bulletin or a simple list of links. Instead, focus on the technical progress, real-world implications, and future potential of this specific area. Make it thought-provoking and insightful for an audience of tech professionals. Include relevant hashtags. Do not include any introductory or concluding remarks, just the post content itself.`;
+    
+     prompt += `Write a highly engaging, viral-style LinkedIn post about this specific topic for a general tech and business audience. Follow these strict formatting rules: 1. Start with a strong, contrarian, or curiosity-inducing hook. 2. Keep it concise and highly readable (short paragraphs of 1-2 sentences). 3. FORMATTING IS CRITICAL: LinkedIn does NOT support markdown asterisks (**). Do NOT use asterisks. Instead, use ALL CAPS for headers and to emphasize important terms. 4. Use emojis as bullet points to break up the text visually. 5. Focus on relatable realities, actionable insights, or thought-provoking perspectives rather than deep technical jargon. 6. End with a specific, thought-provoking question to drive comments. 7. Include 3-5 relevant hashtags. 8. Do NOT include any introductory or concluding remarks. IMPORTANT: The entire post MUST be strictly under 1500 characters.`;
 
       const response = await ai.models.generateContent({
         model: 'gemini-3.1-pro-preview',
