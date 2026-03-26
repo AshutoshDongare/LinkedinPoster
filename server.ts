@@ -1,10 +1,7 @@
 import "dotenv/config";
 import express from "express";
-import { createServer as createViteServer } from "vite";
 import path from "path";
-import cookieParser from "cookie-parser";
 import axios from "axios";
-import cron from "node-cron";
 import fs from "fs/promises";
 import { GoogleGenAI } from "@google/genai";
 
@@ -209,7 +206,11 @@ const topics = [
     const textResponse = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: prompt,
-      config: { tools: [{ googleSearch: {} }] }
+      config: { tools: [{ googleSearch: {} }], 
+      httpOptions: { 
+      timeout: 120000 // 120 seconds (2 minutes)
+        }
+      }
     });
     
     const text = textResponse.text;
@@ -237,7 +238,13 @@ const topics = [
 
     const imageResponse = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
-      contents: { parts: [{ text: imagePrompt }] }
+      contents: { parts: [{ text: imagePrompt }] },
+      config: {
+      // Crucial for heavy image generation tasks
+      httpOptions: { 
+        timeout: 180000 // 180 seconds (3 minutes)
+        }
+      }
     });
 
     let base64Image = '';
@@ -275,7 +282,6 @@ async function startServer() {
 
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
-  app.use(cookieParser());
 
 // Simple Basic Auth Middleware to secure the Web UI
   app.use((req, res, next) => {
@@ -455,21 +461,6 @@ async function startServer() {
       res.status(500).json({ error: "Failed to post to LinkedIn", details: err.response?.data });
     }
   });
-
-  // Vite middleware for development
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
-  }
 
   app.listen(port, "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${port}`);
