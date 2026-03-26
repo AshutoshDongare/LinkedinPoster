@@ -68,7 +68,7 @@ export default function PostGenerator({ sources, isAuthenticated }: PostGenerato
      prompt += `Write a highly engaging, viral-style LinkedIn post about this specific topic for a general tech and business audience. Follow these strict formatting rules: 1. Start with a strong, contrarian, or curiosity-inducing hook. 2. Keep it concise and highly readable (short paragraphs of 1-2 sentences). 3. FORMATTING IS CRITICAL: LinkedIn does NOT support markdown asterisks (**). Do NOT use asterisks. Instead, use ALL CAPS for headers and to emphasize important terms. 4. Use emojis as bullet points to break up the text visually. 5. Focus on relatable realities, actionable insights, or thought-provoking perspectives rather than deep technical jargon. 6. End with a specific, thought-provoking question to drive comments. 7. Include 3-5 relevant hashtags. 8. Do NOT include any introductory or concluding remarks. IMPORTANT: The entire post MUST be strictly under 1500 characters.`;
 
       const response = await ai.models.generateContent({
-        model: 'gemini-3.1-pro-preview',
+        model: 'gemini-3-flash-preview',
         contents: prompt,
         config: {
           tools: [{ googleSearch: {} }]
@@ -103,7 +103,7 @@ export default function PostGenerator({ sources, isAuthenticated }: PostGenerato
       const prompt = `An engaging, professional, high-quality illustration for a LinkedIn post about: ${generatedText.substring(0, 200)}...`;
 
       const response = await ai.models.generateContent({
-        model: 'gemini-3-pro-image-preview',
+        model: 'gemini-3.1-flash-image-preview',
         contents: {
           parts: [{ text: prompt }]
         },

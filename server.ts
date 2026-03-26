@@ -207,7 +207,7 @@ const topics = [
 
     console.log(`Auto-post: Generating text for topic: ${selectedTopic}...`);
     const textResponse = await ai.models.generateContent({
-      model: 'gemini-3.1-pro-preview',
+      model: 'gemini-3-flash-preview',
       contents: prompt,
       config: { tools: [{ googleSearch: {} }] }
     });
