@@ -36,7 +36,7 @@ export default function Chatbot() {
       
       if (!chatSessionRef.current) {
         chatSessionRef.current = ai.chats.create({
-          model: 'gemini-3-flash-preview,
+          model: 'gemini-3-flash-preview',
           config: {
             systemInstruction: 'You are a helpful AI assistant specializing in Generative AI trends and LinkedIn content strategy.',
           }
