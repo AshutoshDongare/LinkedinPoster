@@ -283,26 +283,27 @@ async function startServer() {
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-// Simple Basic Auth Middleware to secure the Web UI
-  app.use((req, res, next) => {
-    // Exclude the cron trigger endpoint (it uses CRON_SECRET instead)
-    if (req.path === '/api/cron/trigger') {
-      return next();
-    }
+//unused because UI is removed
+  // Simple Basic Auth Middleware to secure the Web UI
+  // app.use((req, res, next) => {
+  //   // Exclude the cron trigger endpoint (it uses CRON_SECRET instead)
+  //   if (req.path === '/api/cron/trigger') {
+  //     return next();
+  //   }
 
-    const b64auth = (req.headers.authorization || '').split(' ')[1] || '';
-    const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':');
+  //   const b64auth = (req.headers.authorization || '').split(' ')[1] || '';
+  //   const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':');
 
-    const expectedUser = 'ashutoshdon13@5';
-    const expectedPass = 'Digit@l5924#';
+  //   const expectedUser = 'ashutoshdon13@5';
+  //   const expectedPass = 'Digit@l5924#';
 
-    if (login && password && login === expectedUser && password === expectedPass) {
-      return next();
-    }
+  //   if (login && password && login === expectedUser && password === expectedPass) {
+  //     return next();
+  //   }
 
-    res.set('WWW-Authenticate', 'Basic realm="LinkedIn Bot Admin"');
-    res.status(401).send('Authentication required.');
-  });
+  //   res.set('WWW-Authenticate', 'Basic realm="LinkedIn Bot Admin"');
+  //   res.status(401).send('Authentication required.');
+  // });
 
 
   // API routes
@@ -434,9 +435,21 @@ async function startServer() {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    // Fire and forget, don't block the request
-    generateAndPostToLinkedIn();
-    res.json({ success: true, message: "Auto-post triggered in background" });
+    // // Fire and forget, don't block the request
+    // generateAndPostToLinkedIn();
+    // res.json({ success: true, message: "Auto-post triggered in background" });
+
+  try 
+  {
+    // Wait for the LLMs to finish before sending the response
+    await generateAndPostToLinkedIn(); 
+    res.json({ success: true, message: "Post completed successfully" });
+  } 
+  catch (error) 
+  {
+    console.error("Task failed:", error);
+    res.status(500).json({ error: "Post failed" });
+  }
   });
 
   app.post("/api/linkedin/post", async (req, res) => {
