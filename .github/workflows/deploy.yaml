@@ -46,5 +46,4 @@ jobs:
             GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
             LINKEDIN_CLIENT_ID=${{ secrets.LINKEDIN_CLIENT_ID }}
             LINKEDIN_CLIENT_SECRET=${{ secrets.LINKEDIN_CLIENT_SECRET }}
-            LINKEDIN_URN=${{ secrets.LINKEDIN_URN }}
           flags: '--allow-unauthenticated'
