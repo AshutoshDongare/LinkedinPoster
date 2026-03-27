@@ -112,44 +112,88 @@ async function generateAndPostToLinkedIn() {
     
     // Rotate topics based on the day of the week to ensure variety
 
-
-const topics = [
+  const topics = [
   "Why single LLM apps are dead: the rise of multi-agent systems",
   "From copilots to autonomous workflows: where agents actually deliver ROI",
   "The architecture of production-grade agentic systems beyond demos",
-  "Why orchestration layers are becoming the new backend",
   "Memory in AI systems: the real bottleneck nobody solved yet",
   "Context engineering vs prompt engineering: the real shift happening now",
-  "Why most AI agents fail after demo day",
   "Human-in-the-loop is not optional: designing controllable AI systems",
 
-  "Do large context windows (1M+ tokens) really eliminate RAG?",
-  "Why retrieval is evolving into context streaming architectures",
   "The tradeoff triangle: latency vs cost vs intelligence in LLM systems",
   "Small models with smart pipelines vs giant models: what actually wins",
   "The emergence of reasoning models vs generative models",
-  "Synthetic data: the next scaling frontier after internet data",
 
-  "Why most enterprise GenAI POCs never reach production",
-  "The hidden cost of maintaining AI systems in production",
   "Build vs buy vs orchestrate: the new enterprise AI decision framework",
   "AI governance is becoming a product problem, not just a policy problem",
   "Why enterprise AI success depends more on workflows than models",
   "The rise of internal AI platforms and why every large company is building one",
 
-  "The shift from writing code to supervising code generation systems",
-  "Multi-file, repo-level reasoning: how AI coding is actually evolving",
-  "Why IDEs are becoming AI-native operating systems for developers",
-  "The end of traditional code reviews: AI as the first reviewer",
-  "Context-aware coding agents vs autocomplete: the real leap",
-
   "Open-weight models vs API models: the real enterprise tipping point",
   "Why open-source AI is accelerating faster than expected",
   "The fragmentation of AI tooling: too many frameworks, no standards",
 
-  "The productivity paradox: why AI doesn’t always translate to business value",
-  "AI-first startups vs AI-enabled enterprises: who has the advantage"
+  "The productivity paradox: why AI does not always translate to business value",
+  "AI-first startups vs AI-enabled enterprises: who has the advantage",
+
+  "Stateless vs stateful AI systems: where long-term value actually lives",
+  "Why evaluation pipelines are more critical than model selection",
+  "LLMOps is DevOps + DataOps + PromptOps: why org structure matters more than tools",
+  "The rise of AI reliability engineering as a new discipline",
+  "Why most teams underestimate versioning in GenAI systems",
+  "Caching strategies for LLM systems: the hidden lever for cost and latency",
+  "Observability in AI systems: logs are not enough anymore",
+
+  "The illusion of accuracy: why looks correct is dangerous in LLM outputs",
+  "Why grounding data quality matters more than model quality",
+  "The hardest part of GenAI is not generation—its validation",
+  "Why deterministic systems are easier to scale than intelligent ones",
+  "Failure modes of AI systems: what breaks in real-world deployments",
+  "Why latency kills more AI products than bad models",
+  "The integration problem: why GenAI fails at system boundaries",
+
+  "Cognitive offloading: are we outsourcing thinking too early?",
+  "From tool to dependency: when does AI stop augmenting and start replacing thinking?",
+  "The skill shift: from knowing answers to asking better questions",
+  "Will AI reduce deep expertise or amplify it?",
+  "Why users trust confident AI more than correct AI",
+
+  "The alignment gap: enterprise goals vs model objectives",
+  "Shadow AI in enterprises: the governance challenge nobody talks about",
+  "Bias in, confidence out: why LLMs amplify subtle data issues",
+  "Auditability in GenAI: can we ever truly explain decisions?",
+  "The ethics of synthetic humans: where do we draw the line?",
+
+  "Will GenAI commoditize intelligence the way cloud commoditized compute?",
+  "The shift from SaaS to Service-as-prompt: is UI becoming irrelevant?",
+  "AI-native organizations: what changes when every workflow has intelligence embedded?",
+  "The plateau question: are we nearing diminishing returns in scaling LLMs?",
+  "From information retrieval to decision-making systems: the next leap",
+
+  "Why most GenAI demos are unintentionally misleading",
+  "AI wont replace jobs—but it will replace how jobs are evaluated",
+  "The real moat in AI is not models, data, or infra—its iteration speed",
+  "Why AI strategy decks fail without execution primitives",
+  "The over-automation trap: just because we can automate doesnt mean we should",
+
+  "Why agent communication protocols will define the next generation of AI systems",
+  "The shift from APIs to intent-based interfaces in software design",
+  "Why AI systems need failure-aware design, not just success optimization",
+  "The emerging role of 'AI product managers' vs traditional PMs",
+  "Why data contracts will become critical in GenAI ecosystems",
+  "The difference between AI capability and AI usability",
+  "Why most GenAI UX is broken and how it needs to evolve",
+  "From prompts to policies: the abstraction shift in controlling AI behavior",
+  "Why continuous learning systems are harder than static intelligence",
+  "The rise of domain-specific AI models vs general-purpose models",
+  "Why AI systems need simulation environments before real-world deployment",
+  "The bottleneck is no longer intelligence, it is decision integration",
+  "Why explainability may never catch up with capability",
+  "The shift from model-centric to system-centric AI thinking",
+  "Why enterprises will move from experimenting with AI to depending on it"
 ];
+
+
 
     // UNUSED - Date modulo topic count to ensure a different topic each day, cycling through the list
     // // Use day of year to cycle through all 17 topics instead of just day of week
@@ -186,7 +230,7 @@ const topics = [
     1. **The Contrarian**: Challenge a popular industry myth or a common AI "hype" narrative.
     2. **The Narrative**: Start with a small, relatable observation and zoom out to the massive industry implication.
     3. **The Comparison**: Compare the "Legacy/Manual" way of working vs. the "AI-Augmented" future.
-    4. **The Practitioner’s Playbook**: Provide a logical, step-by-step mental model for applying this research.
+    4. **The Practitioners Playbook**: Provide a logical, step-by-step mental model for applying this research.
     5. **The Visionary**: Focus entirely on how this breakthrough changes the world 2-5 years from now.
 
     ### EXECUTION PHASE
@@ -208,7 +252,7 @@ const topics = [
       contents: prompt,
       config: { tools: [{ googleSearch: {} }], 
       httpOptions: { 
-      timeout: 120000 // 120 seconds (2 minutes)
+      timeout: 300000 // 300 seconds (5 minutes)
         }
       }
     });
@@ -225,16 +269,46 @@ const topics = [
 
     console.log("Auto-post: Generating image...");
     // const imagePrompt = `An engaging, professional, high-quality conceptual illustration for a LinkedIn post about ${selectedTopic}. The post discusses: ${text.substring(0, 150)}... Make it visually striking, modern, and relevant to AI research.`;
-    const imagePrompt = `A professional, high-quality conceptual technical illustration for a LinkedIn post about ${selectedTopic}. 
-    The post discusses: ${text.substring(0, 500)}... 
+    // const imagePrompt = `A professional, high-quality conceptual technical illustration for a LinkedIn post about ${selectedTopic}. 
+    // The post discusses: ${text.substring(0, 500)}... 
 
-    ### Visual Instructions:
-    - **Style:** Clean, minimalist, modern technical aesthetic. Think high-end corporate infographic, not sci-fi.
-    - **Lighting:** Bright, well-lit, natural light studio setting. Crisp details.
-    - **Background:** Clean, neutral background (pure white, very light gray, or light pastel gradient). No dark environments or heavy bokeh.
-    - **Color Palette:** Professional and light. Use blues, greens, and grays with subtle accents of primary colors. Avoid oversaturated neons or "glowing" effects.
-    - **Composition:** Use precise lines, isometric view, or a clean diagrammatic layout. Visualize the AI concepts (like neural networks, data flow, or algorithms) as elegant, structured blueprints or transparent interfaces.
-    `;
+    // ### Visual Instructions:
+    // - **Style:** Clean, minimalist, modern technical aesthetic. Think high-end corporate infographic, not sci-fi.
+    // - **Lighting:** Bright, well-lit, natural light studio setting. Crisp details.
+    // - **Background:** Clean, neutral background (pure white, very light gray, or light pastel gradient). No dark environments or heavy bokeh.
+    // - **Color Palette:** Professional and light. Use blues, greens, and grays with subtle accents of primary colors. Avoid oversaturated neons or "glowing" effects.
+    // - **Composition:** Use precise lines, isometric view, or a clean diagrammatic layout. Visualize the AI concepts (like neural networks, data flow, or algorithms) as elegant, structured blueprints or transparent interfaces.
+    // `;
+
+    const imagePrompt = `
+    An engaging, high-quality conceptual illustration for a LinkedIn post about ${selectedTopic}. 
+    The post discusses: ${text.substring(0, 500)}...
+
+    ### Style Decision Logic:
+    - If the topic/content feels **futuristic, abstract, AI evolution, human-AI tension, or philosophical/forward-looking**, use a **dark, cinematic, glowing style**.
+    - If the topic/content feels **enterprise, architecture, systems design, governance, LLMOps, or practical implementation**, use a **light, clean, corporate style**.
+
+    ### Visual Instructions (Dynamic):
+
+    #### Option A — Dark Futuristic (when applicable):
+    - **Style:** Cinematic, cutting-edge, slightly abstract conceptual art.
+    - **Lighting:** Low-light with controlled highlights, soft glows, subtle neon accents.
+    - **Background:** Dark gradients (black, deep blue, violet) with depth.
+    - **Color Palette:** Electric blues, purples, subtle neon accents. Avoid clutter.
+    - **Composition:** Layered depth, flowing data, networks, or human-AI interaction visuals. Slightly dramatic but still professional.
+
+    #### Option B — Light Professional (when applicable):
+    - **Style:** Clean, minimalist, modern technical aesthetic (high-end corporate infographic).
+    - **Lighting:** Bright, well-lit, natural light studio setting with crisp clarity.
+    - **Background:** Pure white, very light gray, or soft pastel gradient.
+    - **Color Palette:** Professional tones (blues, greens, grays) with subtle accents. No neon/glow.
+    - **Composition:** Structured layouts, isometric diagrams, precise flows, elegant system visualization.
+
+    ### General Requirements:
+    - Keep it visually striking but **LinkedIn-appropriate (not overly artistic or chaotic)**.
+    - Avoid text in the image.
+    - Focus on **clarity of concept + visual storytelling of AI systems or ideas**.
+    `;    
 
     const imageResponse = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
@@ -242,7 +316,7 @@ const topics = [
       config: {
       // Crucial for heavy image generation tasks
       httpOptions: { 
-        timeout: 180000 // 180 seconds (3 minutes)
+        timeout: 300000 // 300 seconds (5 minutes)
         }
       }
     });
@@ -265,45 +339,12 @@ const topics = [
   }
 }
 
-
-// // Schedule cron job for 7:00 PM IST explicitly, regardless of server timezone
-// cron.schedule("0 19 * * *", () => {
-//   console.log("Running scheduled LinkedIn post (7:00 PM IST)");
-//   generateAndPostToLinkedIn();
-// }, {
-//   timezone: "Asia/Kolkata"
-// });
-
-
-
 async function startServer() {
   const app = express();
   const port = process.env.PORT || 8080;;
 
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
-
-//unused because UI is removed
-  // Simple Basic Auth Middleware to secure the Web UI
-  // app.use((req, res, next) => {
-  //   // Exclude the cron trigger endpoint (it uses CRON_SECRET instead)
-  //   if (req.path === '/api/cron/trigger') {
-  //     return next();
-  //   }
-
-  //   const b64auth = (req.headers.authorization || '').split(' ')[1] || '';
-  //   const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':');
-
-  //   const expectedUser = 'ashutoshdon13@5';
-  //   const expectedPass = 'Digit@l5924#';
-
-  //   if (login && password && login === expectedUser && password === expectedPass) {
-  //     return next();
-  //   }
-
-  //   res.set('WWW-Authenticate', 'Basic realm="LinkedIn Bot Admin"');
-  //   res.status(401).send('Authentication required.');
-  // });
 
 
   // API routes
