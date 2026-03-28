@@ -6,6 +6,37 @@ import fs from "fs/promises";
 import { GoogleGenAI } from "@google/genai";
 
 const DATA_FILE = path.join(process.cwd(), "auth_data.json");
+const GEMINI_TEXT_MODEL = process.env.GEMINI_TEXT_MODEL || "gemini-3-flash-preview";
+const GEMINI_IMAGE_MODEL = process.env.GEMINI_IMAGE_MODEL || "gemini-2.5-flash-image";
+
+function hasPromptLeakage(text: string): boolean {
+  const leakPatterns = [
+    /strategy\s*phase/i,
+    /execution\s*phase/i,
+    /post\s*archetype/i,
+    /the\s+practitioners\s+playbook/i,
+  ];
+
+  return leakPatterns.some((pattern) => pattern.test(text));
+}
+
+function sanitizeGeneratedPost(text: string): string {
+  let cleaned = text;
+
+  // If the model prints process sections, keep only content after execution phase.
+  const executionSplit = cleaned.split(/#{0,6}\s*execution\s*phase\s*:?/i);
+  if (executionSplit.length > 1) {
+    cleaned = executionSplit[executionSplit.length - 1];
+  }
+
+  cleaned = cleaned
+    .replace(/^\s*[-*_]{3,}\s*$/gm, "")
+    .replace(/^\s*#{1,6}.*$/gm, "")
+    .replace(/^\s*\*\*.*\*\*\s*$/gm, "")
+    .trim();
+
+  return cleaned;
+}
 
 async function getAuthData() {
   try {
@@ -222,42 +253,58 @@ async function generateAndPostToLinkedIn() {
         prompt += `Focus specifically on insights from these sources or related to these keywords: ${data.sources.join(', ')}. `;
     }
 
-    prompt += `
-    ---
-    ### STRATEGY PHASE
-    Before writing, analyze the research findings and select the most relevant 'Post Archetype' from the list below to maximize engagement for this specific insight:
+    prompt += "Write the final LinkedIn post only.";
 
-    1. **The Contrarian**: Challenge a popular industry myth or a common AI "hype" narrative.
-    2. **The Narrative**: Start with a small, relatable observation and zoom out to the massive industry implication.
-    3. **The Comparison**: Compare the "Legacy/Manual" way of working vs. the "AI-Augmented" future.
-    4. **The Practitioners Playbook**: Provide a logical, step-by-step mental model for applying this research.
-    5. **The Visionary**: Focus entirely on how this breakthrough changes the world 2-5 years from now.
+    const strategyInstruction = `
+  You are writing one production-ready LinkedIn post.
 
-    ### EXECUTION PHASE
-    Write a highly engaging LinkedIn post based on the selected archetype. Follow these strict rules:
+  Internal reasoning policy:
+  - Privately analyze the findings and choose one post archetype: Contrarian, Narrative, Comparison, Practitioners Playbook, or Visionary.
+  - Never reveal analysis, phase labels, archetype selection notes, chain-of-thought, or scratchpad text.
+  - Never output headings such as STRATEGY PHASE or EXECUTION PHASE.
 
-    1. **DYNAMIC FLOW**: Avoid "typecasted" patterns. Do not always use a list. Use a mix of short, punchy sentences and flowing, insightful observations.
-    2. **NO MARKDOWN**: LinkedIn does NOT support asterisks (**). Do NOT use them for bolding. Use ALL CAPS for emphasis very sparingly.
-    3. **VISUALS**: Use a relevant emoji at the start of the title. Use emojis naturally to break up text, but only use them as bullet points if the 'Playbook' style is chosen.
-    4. **FORMAT**: Keep paragraphs to 1-2 sentences. Ensure the structure feels organic and human-written.
-    5. **CONSTRAINTS**: Under 1500 characters. No "intro" or "conclusion" filler text. Use the year 2026 only if absolutely necessary for context.
-    6. **HOOK & CTA**: Start with a curiosity-inducing hook. End with a specific, thought-provoking question to drive comments.
-    7. **HASHTAGS**: Include 3-5 relevant hashtags at the very end.
-    `;
+  Output requirements:
+  1. DYNAMIC FLOW: Avoid repetitive templates. Mix punchy lines and flowing observations.
+  2. NO MARKDOWN: Do not use asterisks for bold. Use ALL CAPS sparingly.
+  3. VISUALS: Start with a relevant emoji in the opening line. Use emojis naturally.
+  4. FORMAT: 1-2 sentence paragraphs. Sound organic and human.
+  5. CONSTRAINTS: Under 1500 characters. No intro/conclusion filler. Mention 2026 only if truly needed.
+  6. HOOK + CTA: Begin with a curiosity hook and end with one specific thought-provoking question.
+  7. HASHTAGS: Add 3-5 relevant hashtags at the end.
+  8. FINAL-ONLY: Return only the final post text with no preface, labels, or explanations.
+  `;
 
 
     console.log(`Auto-post: Generating text for topic: ${selectedTopic}...`);
-    const textResponse = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+    let textResponse = await ai.models.generateContent({
+      model: GEMINI_TEXT_MODEL,
       contents: prompt,
-      config: { tools: [{ googleSearch: {} }], 
+      config: {
+      systemInstruction: strategyInstruction,
+      tools: [{ googleSearch: {} }], 
       httpOptions: { 
       timeout: 300000 // 300 seconds (5 minutes)
         }
       }
     });
-    
-    const text = textResponse.text;
+
+    let text = sanitizeGeneratedPost(textResponse.text || "");
+
+    if (text && hasPromptLeakage(text)) {
+      console.warn("Auto-post: Detected prompt leakage, retrying with stricter output instruction...");
+      textResponse = await ai.models.generateContent({
+        model: GEMINI_TEXT_MODEL,
+        contents: `Regenerate this as final LinkedIn post only with no phase labels, no analysis text, and no markdown headings:\n\n${text}`,
+        config: {
+          systemInstruction: strategyInstruction,
+          httpOptions: {
+            timeout: 300000,
+          },
+        },
+      });
+
+      text = sanitizeGeneratedPost(textResponse.text || "");
+    }
 
     if (!text) throw new Error("Failed to generate text");
 
@@ -311,7 +358,7 @@ async function generateAndPostToLinkedIn() {
     `;    
 
     const imageResponse = await ai.models.generateContent({
-      model: 'gemini-2.5-flash-image',
+      model: GEMINI_IMAGE_MODEL,
       contents: { parts: [{ text: imagePrompt }] },
       config: {
       // Crucial for heavy image generation tasks
@@ -341,7 +388,7 @@ async function generateAndPostToLinkedIn() {
 
 async function startServer() {
   const app = express();
-  const port = process.env.PORT || 8080;;
+  const port = Number(process.env.PORT || 8080);
 
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
