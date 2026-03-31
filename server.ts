@@ -225,28 +225,11 @@ async function generateAndPostToLinkedIn() {
 ];
 
 
-
-    // UNUSED - Date modulo topic count to ensure a different topic each day, cycling through the list
-    // // Use day of year to cycle through all 17 topics instead of just day of week
-    // const start = new Date(new Date().getFullYear(), 0, 0);
-    // const diff = new Date().getTime() - start.getTime();
-    // const oneDay = 1000 * 60 * 60 * 24;
-    // const dayOfYear = Math.floor(diff / oneDay);
-    // const selectedTopic = topics[dayOfYear % topics.length];
-
     // Randomly select a topic from the list to ensure more variety in posts, especially if the server restarts or if there are multiple posts in a day
     // Generates a random index between 0 and topics.length - 1
     const randomIndex = Math.floor(Math.random() * topics.length);
     const selectedTopic = topics[randomIndex];
 
-    // Changing this static prompting logic with more dynamic 
-    // let prompt = `Search the internet for recent research progress, breakthroughs, and deep-dive insights regarding "${selectedTopic}" in the field of AI and Generative AI. `;
-    // if (data.sources && data.sources.length > 0) {
-    //   prompt += `Focus specifically on insights from these sources or related to these keywords: ${data.sources.join(', ')}. `;
-    // }
-
-    // prompt += `Write a highly engaging, viral-style LinkedIn post about this specific topic for a general tech and business audience. Follow these strict formatting rules: 1. Start with a strong, contrarian, or curiosity-inducing hook. 2. Keep it concise and highly readable (short paragraphs of 1-2 sentences). 3. FORMATTING IS CRITICAL: LinkedIn does NOT support markdown asterisks (**). Do NOT use asterisks to emphasize important terms. 4. Use emojis as bullet points to break up the text visually. 5. Focus on relatable realities, actionable insights, or thought-provoking perspectives rather than deep technical jargon. 6. End with a specific, thought-provoking question to drive comments. 7. Include 3-5 relevant hashtags. 8. Do NOT include any introductory or concluding remarks. 9. use relevant emoji icon at the start of the title of the post. 10. make required variation in the format of the posts to avoide them feeling typecasted. IMPORTANT: The entire post MUST be strictly under 1500 characters. and Do not always mention like - In year 2026 or biggest thing of 2026 use the year number only when utmost necessory`;
-    
     let prompt = `Search the internet for recent research progress, breakthroughs, and deep-dive insights regarding "${selectedTopic}" in the field of AI and Generative AI. `;
 
     if (data.sources && data.sources.length > 0) {
@@ -267,13 +250,12 @@ async function generateAndPostToLinkedIn() {
   1. DYNAMIC FLOW: Avoid repetitive templates. Mix punchy lines and flowing observations.
   2. NO MARKDOWN: Do not use asterisks for bold. Use ALL CAPS sparingly.
   3. VISUALS: Start with a relevant emoji in the opening line. Use emojis naturally.
-  4. FORMAT: 1-2 sentence paragraphs. Sound organic and human.
-  5. CONSTRAINTS: Under 1500 characters. No intro/conclusion filler. Mention 2026 only if truly needed.
+  4. FORMAT: 1-2 sentence paragraphs. Sound organic and more human. Dont use too much decorated complex language. Be clear and concise.
+  5. CONSTRAINTS: Under 1000 characters. No intro/conclusion filler. Mention the year 2026 only if truly needed.
   6. HOOK + CTA: Begin with a curiosity hook and end with one specific thought-provoking question.
-  7. HASHTAGS: Add 3-5 relevant hashtags at the end.
+  7. HASHTAGS: Add 3-5 relevant hashtags at the end. like for example: #AI #GenAI #TechTrends
   8. FINAL-ONLY: Return only the final post text with no preface, labels, or explanations.
   `;
-
 
     console.log(`Auto-post: Generating text for topic: ${selectedTopic}...`);
     let textResponse = await ai.models.generateContent({
@@ -309,23 +291,12 @@ async function generateAndPostToLinkedIn() {
     if (!text) throw new Error("Failed to generate text");
 
     // Safety net: LinkedIn has a hard limit of 3000 characters.
-    if (text.length > 2950) {
-      console.log(`Auto-post: Text was ${text.length} chars, truncating to 2950 to fit LinkedIn limits.`);
-      text = text.substring(0, 2950) + "...";
+    if (text.length > 1500) {
+      console.log(`Auto-post: Text was ${text.length} chars, truncating to 1500 to fit LinkedIn limits.`);
+      text = text.substring(0, 1500) + "...";
     }
 
     console.log("Auto-post: Generating image...");
-    // const imagePrompt = `An engaging, professional, high-quality conceptual illustration for a LinkedIn post about ${selectedTopic}. The post discusses: ${text.substring(0, 150)}... Make it visually striking, modern, and relevant to AI research.`;
-    // const imagePrompt = `A professional, high-quality conceptual technical illustration for a LinkedIn post about ${selectedTopic}. 
-    // The post discusses: ${text.substring(0, 500)}... 
-
-    // ### Visual Instructions:
-    // - **Style:** Clean, minimalist, modern technical aesthetic. Think high-end corporate infographic, not sci-fi.
-    // - **Lighting:** Bright, well-lit, natural light studio setting. Crisp details.
-    // - **Background:** Clean, neutral background (pure white, very light gray, or light pastel gradient). No dark environments or heavy bokeh.
-    // - **Color Palette:** Professional and light. Use blues, greens, and grays with subtle accents of primary colors. Avoid oversaturated neons or "glowing" effects.
-    // - **Composition:** Use precise lines, isometric view, or a clean diagrammatic layout. Visualize the AI concepts (like neural networks, data flow, or algorithms) as elegant, structured blueprints or transparent interfaces.
-    // `;
 
     const imagePrompt = `
     An engaging, high-quality conceptual illustration for a LinkedIn post about ${selectedTopic}. 
@@ -523,9 +494,6 @@ async function startServer() {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    // // Fire and forget, don't block the request
-    // generateAndPostToLinkedIn();
-    // res.json({ success: true, message: "Auto-post triggered in background" });
 
   try 
   {
