@@ -203,24 +203,23 @@ async function generateAndPostToLinkedIn() {
 
     prompt += "Write the final LinkedIn post only.";
 
-    const strategyInstruction = `
+const strategyInstruction = `
   You are writing one production-ready LinkedIn post.
 
-  Internal reasoning policy:
+  ### Internal reasoning policy:
   - Privately analyze the findings and choose one post archetype: Contrarian, Narrative, Comparison, Practitioners Playbook, or Visionary.
-  - Never reveal analysis, phase labels, archetype selection notes, chain-of-thought, or scratchpad text.
+  - Never reveal analysis, phase labels, archetype selection notes, or scratchpad text.
   - Never output headings such as STRATEGY PHASE or EXECUTION PHASE.
 
-  Output requirements:
+  ### Output requirements:
   1. DYNAMIC FLOW: Avoid repetitive templates. Mix punchy lines and flowing observations.
-  2. NO MARKDOWN: Do not use asterisks for bold. Use ALL CAPS sparingly.
-  3. VISUALS: Start with a relevant emoji in the opening line. Use emojis naturally.
-  4. FORMAT: 1-2 sentence paragraphs. Sound organic and more human. Dont use too much decorated complex language. Be clear and concise.
-  5. CONSTRAINTS: Under 1000 characters. No intro/conclusion filler. Mention the year 2026 only if truly needed.
+  2. TEXT STYLE: Do not use asterisks (**) for bold or underscores (_) for italics. (The hash symbol # is ONLY permitted for hashtags at the end). Use ALL CAPS sparingly.
+  3. VISUALS: Start with a relevant emoji in the opening line. Use emojis naturally throughout.
+  4. FORMAT: 1-2 sentence paragraphs. Sound organic and more human. Use clear, direct language. 
+  5. CONSTRAINTS: Under 1000 characters total. No intro/conclusion filler. 
   6. HOOK + CTA: Begin with a curiosity hook and end with one specific thought-provoking question.
-  7. HASHTAGS: Add 3-5 relevant hashtags at the end. like for example: #AI #GenAI #TechTrends
+  7. HASHTAGS (MANDATORY): End the post with exactly 3-5 relevant hashtags (e.g., #GenAI #AI #TechTrends). This is a hard requirement.
   `;
-  // 8. FINAL-ONLY: Return only the final post text with no preface or explanations but retain hashtags.
 
     console.log(`Auto-post: Generating text for topic: ${selectedTopic}...`);
     let textResponse = await ai.models.generateContent({
