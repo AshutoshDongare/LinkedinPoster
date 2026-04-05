@@ -219,8 +219,8 @@ async function generateAndPostToLinkedIn() {
   5. CONSTRAINTS: Under 1000 characters. No intro/conclusion filler. Mention the year 2026 only if truly needed.
   6. HOOK + CTA: Begin with a curiosity hook and end with one specific thought-provoking question.
   7. HASHTAGS: Add 3-5 relevant hashtags at the end. like for example: #AI #GenAI #TechTrends
-  8. FINAL-ONLY: Return only the final post text with no preface or explanations but retain hashtags.
   `;
+  // 8. FINAL-ONLY: Return only the final post text with no preface or explanations but retain hashtags.
 
     console.log(`Auto-post: Generating text for topic: ${selectedTopic}...`);
     let textResponse = await ai.models.generateContent({
