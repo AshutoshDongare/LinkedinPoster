@@ -144,84 +144,49 @@ async function generateAndPostToLinkedIn() {
     // Rotate topics based on the day of the week to ensure variety
 
   const topics = [
-  "Why single LLM apps are dead: the rise of multi-agent systems",
-  "From copilots to autonomous workflows: where agents actually deliver ROI",
-  "The architecture of production-grade agentic systems beyond demos",
-  "Memory in AI systems: the real bottleneck nobody solved yet",
-  "Context engineering vs prompt engineering: the real shift happening now",
-  "Human-in-the-loop is not optional: designing controllable AI systems",
+  // --- 1. Agentic Architectures & Multi-Agent Systems ---
+  "Architectural patterns for multi-agent orchestration: Beyond the single-agent demo",
+  "Agent communication protocols (MCP/A2A): Defining the 'Agent Internet'",
+  "Memory in AI systems: Solving the context-window bottleneck with persistent state",
+  "Human-in-the-loop by design: Engineering controllable autonomy in high-stakes tasks",
+  "Self-healing workflows: Agents that detect and fix their own execution failures",
 
-  "The tradeoff triangle: latency vs cost vs intelligence in LLM systems",
-  "Small models with smart pipelines vs giant models: what actually wins",
-  "The emergence of reasoning models vs generative models",
+  // --- 2. Reasoning & The New Scaling Frontier ---
+  "Test-time compute: Scaling reasoning at inference vs. scaling training data",
+  "Process Reward Models (PRMs): Why the reasoning path matters more than the final answer",
+  "Neural-Symbolic Hybrids: Combining LLM intuition with formal logic for zero-error systems",
+  "World Models: Why the next leap in planning requires predictive visual simulation",
+  "Multi-modal alignment: The 'Omni-model' loop where text, vision, and action merge",
 
-  "Build vs buy vs orchestrate: the new enterprise AI decision framework",
-  "AI governance is becoming a product problem, not just a policy problem",
-  "Why enterprise AI success depends more on workflows than models",
-  "The rise of internal AI platforms and why every large company is building one",
+  // --- 3. Efficiency, SLMs & Edge AI ---
+  "The SLM revolution: Why domain-specific 7B-30B models are winning on Enterprise ROI",
+  "State-Space Models (SSM) vs. Transformers: Finding the efficiency sweet spot for long context",
+  "Quantization-aware fine-tuning: Running frontier-grade logic on local edge hardware",
+  "Model-distillation pipelines: Transforming giant model knowledge into agile local assets",
 
-  "Open-weight models vs API models: the real enterprise tipping point",
-  "Why open-source AI is accelerating faster than expected",
-  "The fragmentation of AI tooling: too many frameworks, no standards",
+  // --- 4. Reliability, Evaluation & AI Engineering ---
+  "AI Reliability Engineering (ARE): Treating hallucinations as a system-stability problem",
+  "Observability 2.0: Moving beyond logs to semantic monitoring and trace-based debugging",
+  "Automated evaluation (Auto-Eval): Using 'Judge' models to scale quality control",
+  "Versioning in non-deterministic systems: How to track 'logic drift' in prompt-based code",
+  "Failure-aware design: Engineering systems that fail gracefully instead of confidently",
 
-  "The productivity paradox: why AI does not always translate to business value",
-  "AI-first startups vs AI-enabled enterprises: who has the advantage",
+  // --- 5. Data, RAG & Knowledge Fabric ---
+  "Agentic RAG: Transforming static retrieval into a dynamic, governed knowledge fabric",
+  "Synthetic data generation: Solving the data-exhaustion problem for niche domain training",
+  "Vector-graph hybrids: Why RAG needs structured relationships to answer complex queries",
 
-  "Stateless vs stateful AI systems: where long-term value actually lives",
-  "Why evaluation pipelines are more critical than model selection",
-  "LLMOps is DevOps + DataOps + PromptOps: why org structure matters more than tools",
-  "The rise of AI reliability engineering as a new discipline",
-  "Why most teams underestimate versioning in GenAI systems",
-  "Caching strategies for LLM systems: the hidden lever for cost and latency",
-  "Observability in AI systems: logs are not enough anymore",
+  // --- 6. Governance, Ethics & Sovereignty ---
+  "Sovereign AI: Why data residency and local infrastructure are the new 'moats'",
+  "The EU AI Act & Technical Compliance: Automated audit trails for high-risk deployments",
+  "Explainability vs. Capability: Are we building systems that are too complex to be auditable?",
+  "The ethics of synthetic humans: Digital twins and the boundaries of identity in 2026",
 
-  "The illusion of accuracy: why looks correct is dangerous in LLM outputs",
-  "Why grounding data quality matters more than model quality",
-  "The hardest part of GenAI is not generation—its validation",
-  "Why deterministic systems are easier to scale than intelligent ones",
-  "Failure modes of AI systems: what breaks in real-world deployments",
-  "Why latency kills more AI products than bad models",
-  "The integration problem: why GenAI fails at system boundaries",
-
-  "Cognitive offloading: are we outsourcing thinking too early?",
-  "From tool to dependency: when does AI stop augmenting and start replacing thinking?",
-  "The skill shift: from knowing answers to asking better questions",
-  "Will AI reduce deep expertise or amplify it?",
-  "Why users trust confident AI more than correct AI",
-
-  "The alignment gap: enterprise goals vs model objectives",
-  "Shadow AI in enterprises: the governance challenge nobody talks about",
-  "Bias in, confidence out: why LLMs amplify subtle data issues",
-  "Auditability in GenAI: can we ever truly explain decisions?",
-  "The ethics of synthetic humans: where do we draw the line?",
-
-  "Will GenAI commoditize intelligence the way cloud commoditized compute?",
-  "The shift from SaaS to Service-as-prompt: is UI becoming irrelevant?",
-  "AI-native organizations: what changes when every workflow has intelligence embedded?",
-  "The plateau question: are we nearing diminishing returns in scaling LLMs?",
-  "From information retrieval to decision-making systems: the next leap",
-
-  "Why most GenAI demos are unintentionally misleading",
-  "AI wont replace jobs—but it will replace how jobs are evaluated",
-  "The real moat in AI is not models, data, or infra—its iteration speed",
-  "Why AI strategy decks fail without execution primitives",
-  "The over-automation trap: just because we can automate doesnt mean we should",
-
-  "Why agent communication protocols will define the next generation of AI systems",
-  "The shift from APIs to intent-based interfaces in software design",
-  "Why AI systems need failure-aware design, not just success optimization",
-  "The emerging role of 'AI product managers' vs traditional PMs",
-  "Why data contracts will become critical in GenAI ecosystems",
-  "The difference between AI capability and AI usability",
-  "Why most GenAI UX is broken and how it needs to evolve",
-  "From prompts to policies: the abstraction shift in controlling AI behavior",
-  "Why continuous learning systems are harder than static intelligence",
-  "The rise of domain-specific AI models vs general-purpose models",
-  "Why AI systems need simulation environments before real-world deployment",
-  "The bottleneck is no longer intelligence, it is decision integration",
-  "Why explainability may never catch up with capability",
-  "The shift from model-centric to system-centric AI thinking",
-  "Why enterprises will move from experimenting with AI to depending on it"
+  // --- 7. Business Logic & Organizational Impact ---
+  "The Productivity Paradox: Why raw token output does not equal business value",
+  "AI-native workflows: Redesigning business logic when the 'middle man' is an agent",
+  "FinOps for GenAI: Managing the unit economics of autonomous agent tokens",
+  "The Iteration Moat: Why speed of feedback loops beats model size in production"
 ];
 
 
@@ -254,7 +219,7 @@ async function generateAndPostToLinkedIn() {
   5. CONSTRAINTS: Under 1000 characters. No intro/conclusion filler. Mention the year 2026 only if truly needed.
   6. HOOK + CTA: Begin with a curiosity hook and end with one specific thought-provoking question.
   7. HASHTAGS: Add 3-5 relevant hashtags at the end. like for example: #AI #GenAI #TechTrends
-  8. FINAL-ONLY: Return only the final post text with no preface, labels, or explanations.
+  8. FINAL-ONLY: Return only the final post text with no preface or explanations but retain hashtags.
   `;
 
     console.log(`Auto-post: Generating text for topic: ${selectedTopic}...`);
@@ -298,35 +263,94 @@ async function generateAndPostToLinkedIn() {
 
     console.log("Auto-post: Generating image...");
 
-    const imagePrompt = `
-    An engaging, high-quality conceptual illustration for a LinkedIn post about ${selectedTopic}. 
+    // const imagePrompt = `
+    // An engaging, high-quality conceptual illustration for a LinkedIn post about ${selectedTopic}. 
+    // The post discusses: ${text.substring(0, 500)}...
+
+    // ### Style Decision Logic:
+    // - If the topic/content feels **futuristic, abstract, AI evolution, human-AI tension, or philosophical/forward-looking**, use a **dark, cinematic, glowing style**.
+    // - If the topic/content feels **enterprise, architecture, systems design, governance, LLMOps, or practical implementation**, use a **light, clean, corporate style**.
+
+    // ### Visual Instructions (Dynamic):
+
+    // #### Option A — Dark Futuristic (when applicable):
+    // - **Style:** Cinematic, cutting-edge, slightly abstract conceptual art.
+    // - **Lighting:** Low-light with controlled highlights, soft glows, subtle neon accents.
+    // - **Background:** Dark gradients (black, deep blue, violet) with depth.
+    // - **Color Palette:** Electric blues, purples, subtle neon accents. Avoid clutter.
+    // - **Composition:** Layered depth, flowing data, networks, or human-AI interaction visuals. Slightly dramatic but still professional.
+
+    // #### Option B — Light Professional (when applicable):
+    // - **Style:** Clean, minimalist, modern technical aesthetic (high-end corporate infographic).
+    // - **Lighting:** Bright, well-lit, natural light studio setting with crisp clarity.
+    // - **Background:** Pure white, very light gray, or soft pastel gradient.
+    // - **Color Palette:** Professional tones (blues, greens, grays) with subtle accents. No neon/glow.
+    // - **Composition:** Structured layouts, isometric diagrams, precise flows, elegant system visualization.
+
+    // ### General Requirements:
+    // - Keep it visually striking but **LinkedIn-appropriate (not overly artistic or chaotic)**.
+    // - Avoid text in the image.
+    // - Focus on **clarity of concept + visual storytelling of AI systems or ideas**.
+    // `;    
+
+const imagePrompt = `
+    An engaging, high-quality conceptual image for a LinkedIn post about ${selectedTopic}. 
     The post discusses: ${text.substring(0, 500)}...
 
-    ### Style Decision Logic:
-    - If the topic/content feels **futuristic, abstract, AI evolution, human-AI tension, or philosophical/forward-looking**, use a **dark, cinematic, glowing style**.
-    - If the topic/content feels **enterprise, architecture, systems design, governance, LLMOps, or practical implementation**, use a **light, clean, corporate style**.
+    ### CRITICAL: Framing & Composition Instructions (REQUIRED):
+    - **Use Prominent Composition:** The central graphic elements must be large, dominant, and the clear hero of the image.
+    - **Maximize Canvas Use:** Avoid vast, empty voids in the background. If the background is light, use textures or subtle background layers that connect to the main subject. If the background is dark, use deep atmospheric depth, but do not leave it blank.
+    - **Allow Elements to Bleed:** In all styles except Style 2 (Flowchart), at least some key elements should extend to, or bleed off, the edge of the frame to suggest a larger system and fill the space.
 
-    ### Visual Instructions (Dynamic):
+    ### CRITICAL: Graphic Style Decision Logic (REQUIRED):
+    Analyze the intent of ${selectedTopic} and the post text to select **exactly ONE** of the following visual styles. Do not mix styles. 
 
-    #### Option A — Dark Futuristic (when applicable):
-    - **Style:** Cinematic, cutting-edge, slightly abstract conceptual art.
-    - **Lighting:** Low-light with controlled highlights, soft glows, subtle neon accents.
-    - **Background:** Dark gradients (black, deep blue, violet) with depth.
-    - **Color Palette:** Electric blues, purples, subtle neon accents. Avoid clutter.
-    - **Composition:** Layered depth, flowing data, networks, or human-AI interaction visuals. Slightly dramatic but still professional.
+    #### STYLE 1: The Technical Draft (Blueprint/Architecture)
+    - **Use For Topics Like:** "Architecture", "Systems design", "Infrastructure", "Quantization".
+    - **Visual Style:** Large-scale technical drafting. This should not be a small diagram, but a sprawling, detailed blueprint that feels like it covers the entire frame.
+    - **Details:** Massive isometric wireframes of software stacks, exploded views of core components, technical annotation lines. The elements should extend right to the edges of the canvas.
+    - **Composition:** Wide-angle view, showing the blueprint spread across a vast desk, but the wireframes themselves are large and fill 90% of the viewable area.
+    - **Color Palette:** Architectural Blue lines on White/Cream. Minimalist but *full*.
+    - **Vibe:** Scale, precision, complexity.
 
-    #### Option B — Light Professional (when applicable):
-    - **Style:** Clean, minimalist, modern technical aesthetic (high-end corporate infographic).
-    - **Lighting:** Bright, well-lit, natural light studio setting with crisp clarity.
-    - **Background:** Pure white, very light gray, or soft pastel gradient.
-    - **Color Palette:** Professional tones (blues, greens, grays) with subtle accents. No neon/glow.
-    - **Composition:** Structured layouts, isometric diagrams, precise flows, elegant system visualization.
+    #### STYLE 2: The Logical Sequence (Process Flow/Workflow)
+    - **Use For Topics Like:** "pipelines", "models", "Chain of Thought", "Human-in-the-loop", "CI/CD".
+    - **Visual Style:** Dominant 3D infographic flowchart.
+    - **Details:** The flowchart nodes (geometric shapes) are massive and take up significant screen real estate. The connections are clear and robust. The flow itself is the entire image.
+    - **Composition:** A logical flow (left-to-right or top-to-bottom) where the individual steps are large enough to see detail, but framed tightly to fill the horizontal canvas.
+    - **Color Palette:** Professional gradients (Corporate Blue, Mint Green, Soft Gray) against a bright, well-lit studio background. Use depth of field to keep the flow filling the space without cluttering it.
+    - **Vibe:** Logic, sequence, and large-scale optimization.
+
+    #### STYLE 3: The Data Web (Knowledge Graph/Network)
+    - **Use For Topics Like:** "Memory", "Vector-graph hybrids", "RAG", "Data-exhuastion", "Domain-specific models".
+    - **Visual Style:** Complex Network Diagram that feels immersive.
+    - **Details:** Not a single small network cluster, but a visualization that surrounds the viewer. Hundreds of small nodes forming dense, massive clusters that sprawl from edge to edge.
+    - **Composition:** Use an extremely deep depth of field. The nodes closest to the camera are blurry and bleed off the frame, while the central network logic is in sharp focus, creating a completely filled and immersive data landscape.
+    - **Color Palette:** Shades of blue (sky, electric, deep) on a pure white or very light gray background.
+    - **Vibe:** Interconnectedness, scale, and infinite complexity.
+
+    #### STYLE 4: The Lucid Innovation (Modern 3D Concept) [Default for abstract innovation]
+    - **Use For Topics Like:** "Productivity paradox", "AI-native organizations", "expertise", "Future of jobs".
+    - **Visual Style:** Minimalist, prominent 3D metaphor. The single subject must dominate the frame.
+    - **Details:** Example: A single, gigantic floating polished silver and glass metaphor for "Augmentation." Or a large, highly detailed human silhouette interacting with massive luminous interfaces.
+    - **Composition:** Tight framing on the subject. The background is airy and bright, but the central metaphor takes up at least 60-70% of the canvas.
+    - **Color Palette:** Pastels (Lavender, Soft Gold, Teal) on a pure white studio environment.
+    - **Vibe:** Clarity, optimistic scale, and high-tech utility.
+
+    #### STYLE 5: The Deep Tech Midnight (Dark/Cinematic) [Niche/Reserved]
+    - **Use ONLY For Topics Like:** "Cybersecurity", "Ethics", "Explainability issues", "Black Box", "Tension".
+    - **Visual Style:** Close-up, intense, "Cyber-technical."
+    - **Details:** Macro-style composition focusing tightly on one intense, glowing technical core. The surroundings are dark, cinematic obsidian or deep navy, but filled with complex shadows and depth, not empty space.
+    - **Composition:** Tight close-up or macro shot. The core structure is huge in the frame, making the viewer feel the scale and power of the concept.
+    - **Color Palette:** Dominant Dark/Deep tones with single-color neon (e.g., Electric Blue only, or Red only) for intense, high-contrast highlights.
+    - **Vibe:** Mystery, deep analysis, risk, and power.
 
     ### General Requirements:
-    - Keep it visually striking but **LinkedIn-appropriate (not overly artistic or chaotic)**.
-    - Avoid text in the image.
-    - Focus on **clarity of concept + visual storytelling of AI systems or ideas**.
-    `;    
+    - NO literal "Robots" or "Terminators." Use architectural, mathematical, or structural metaphors.
+    - Ensure the edges are crisp and professional (LinkedIn-appropriate).
+    - No text or code inside the image.
+    `;
+
 
     const imageResponse = await ai.models.generateContent({
       model: GEMINI_IMAGE_MODEL,
