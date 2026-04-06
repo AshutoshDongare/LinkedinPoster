@@ -8,6 +8,57 @@ import { GoogleGenAI } from "@google/genai";
 const DATA_FILE = path.join(process.cwd(), "auth_data.json");
 const GEMINI_TEXT_MODEL = process.env.GEMINI_TEXT_MODEL || "gemini-3-flash-preview";
 const GEMINI_IMAGE_MODEL = process.env.GEMINI_IMAGE_MODEL || "gemini-2.5-flash-image";
+const MAX_TEXT_GENERATION_RETRIES = 3;
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function getRetryDelayMs(): number {
+  return Math.random() < 0.5 ? 60_000 : 120_000;
+}
+
+function isLlmBusy503Error(error: any): boolean {
+  const status = error?.status ?? error?.statusCode ?? error?.response?.status;
+  if (status !== 503) return false;
+
+  const message = String(
+    error?.message ?? error?.response?.data?.error?.message ?? error?.response?.data ?? ""
+  ).toLowerCase();
+
+  return message.includes("busy") || message.includes("overloaded") || message.includes("unavailable");
+}
+
+async function generateTextWithRetry(ai: GoogleGenAI, request: any): Promise<any> {
+  let attempt = 0;
+
+  while (attempt <= MAX_TEXT_GENERATION_RETRIES) {
+    try {
+      return await ai.models.generateContent(request);
+    } catch (error: any) {
+      const isRetryable = isLlmBusy503Error(error);
+      const hasMoreRetries = attempt < MAX_TEXT_GENERATION_RETRIES;
+
+      if (!isRetryable || !hasMoreRetries) {
+        throw error;
+      }
+
+      const delayMs = getRetryDelayMs();
+      const retryNumber = attempt + 1;
+
+      console.warn(
+        `Text generation got 503 LLM busy. Retry ${retryNumber}/${MAX_TEXT_GENERATION_RETRIES} in ${Math.round(
+          delayMs / 1000
+        )}s...`
+      );
+
+      await sleep(delayMs);
+      attempt += 1;
+    }
+  }
+
+  throw new Error("Text generation failed after retries");
+}
 
 function hasPromptLeakage(text: string): boolean {
   const leakPatterns = [
@@ -222,7 +273,7 @@ const strategyInstruction = `
   `;
 
     console.log(`Auto-post: Generating text for topic: ${selectedTopic}...`);
-    let textResponse = await ai.models.generateContent({
+    let textResponse = await generateTextWithRetry(ai, {
       model: GEMINI_TEXT_MODEL,
       contents: prompt,
       config: {
@@ -238,7 +289,7 @@ const strategyInstruction = `
 
     if (text && hasPromptLeakage(text)) {
       console.warn("Auto-post: Detected prompt leakage, retrying with stricter output instruction...");
-      textResponse = await ai.models.generateContent({
+      textResponse = await generateTextWithRetry(ai, {
         model: GEMINI_TEXT_MODEL,
         contents: `Regenerate this as final LinkedIn post only with no phase labels, no analysis text, and no markdown headings:\n\n${text}`,
         config: {
