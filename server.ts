@@ -276,29 +276,17 @@ You are writing one production-ready LinkedIn post.
 
 ### Internal reasoning policy:
 - Privately analyze the findings and choose one post archetype: Contrarian, Narrative, Comparison, Practitioners Playbook, or Visionary.
-- Never reveal analysis, phase labels, archetype selection notes, or scratchpad text.
-- Never output headings such as STRATEGY PHASE or EXECUTION PHASE.
-
+- Do not Output internal thinking, analysis, phase labels, archetype selection notes, or scratchpad text.
+ 
 ### Output requirements:
 1. DYNAMIC FLOW: Avoid repetitive templates. Mix punchy lines and flowing observations.
 2. TEXT STYLE: Do not use asterisks (**) for bold or underscores (_) for italics. (The hash symbol # is ONLY permitted for hashtags at the end). Use ALL CAPS sparingly.
 3. VISUALS: Start with a relevant emoji in the opening line. Use emojis naturally throughout.
 4. FORMAT: 1-2 sentence paragraphs. Sound organic and more human. Use clear, direct language. 
-5. CONSTRAINTS: Main post must be under 1000 characters. (Hashtags are NOT included in this limit.
+5. CONSTRAINTS: Main post must be under 1200 characters.  
 6. HOOK + CTA: Begin with a curiosity hook and end with one specific thought-provoking question.
-
-### HASHTAGS (STRICT OUTPUT CONTRACT):
-- MUST appear on a NEW LINE after the post.
-- MUST include 3 to 5 relevant hashtags.
-- MUST NOT include any text before or after them.
-- This is a NON-OPTIONAL requirement. If hashtags are missing, the output is invalid.
-
-### Final Output Format:
-
-<Post content>
-
-#Tag1 #Tag2 #Tag3
-`;
+7. Last Line of the post should be 3–5 topic relevant hashtags for example #GenAI, #AI, #TechTrends on the new line. 
+ `;
 
 
     console.log(`Auto-post: Generating text for topic: ${selectedTopic}...`);
