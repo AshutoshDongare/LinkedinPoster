@@ -195,49 +195,48 @@ async function generateAndPostToLinkedIn() {
     // Rotate topics based on the day of the week to ensure variety
 
   const topics = [
-  // --- 1. Agentic Architectures & Multi-Agent Systems ---
-  "Architectural patterns for multi-agent orchestration: Beyond the single-agent demo",
-  "Agent communication protocols (MCP/A2A): Defining the 'Agent Internet'",
-  "Memory in AI systems: Solving the context-window bottleneck with persistent state",
-  "Human-in-the-loop by design: Engineering controllable autonomy in high-stakes tasks",
-  "Self-healing workflows: Agents that detect and fix their own execution failures",
+  // Core Agentic Systems
+  "Self-healing agent systems: Designing workflows that detect, debug, and recover autonomously",
+  "Agent orchestration vs autonomy: Where should humans stay in the loop?",
+  "Memory architectures for agents: Short-term context vs long-term knowledge graphs",
+  // Architecture & Models
+  "State-Space Models vs Transformers: The future of long-context efficiency",
+  "World models in AI: From text prediction to environment simulation",
+  "Neural-symbolic systems: Can logic finally tame hallucinations?",
+  "Small models, big impact: Are we overestimating the need for frontier models?",
 
-  // --- 2. Reasoning & The New Scaling Frontier ---
-  "Test-time compute: Scaling reasoning at inference vs. scaling training data",
-  "Process Reward Models (PRMs): Why the reasoning path matters more than the final answer",
-  "Neural-Symbolic Hybrids: Combining LLM intuition with formal logic for zero-error systems",
-  "World Models: Why the next leap in planning requires predictive visual simulation",
-  "Multi-modal alignment: The 'Omni-model' loop where text, vision, and action merge",
+  // Efficiency & Deployment
+  "Model distillation pipelines: Turning frontier intelligence into edge-ready systems",
+  "Quantization strategies: How far can we compress intelligence without losing reasoning?",
+  "Local-first AI: Privacy, latency, and cost advantages of on-device models",
+  "Caching, batching, and routing: The hidden levers of LLM system performance",
 
-  // --- 3. Efficiency, SLMs & Edge AI ---
-  "The SLM revolution: Why domain-specific 7B-30B models are winning on Enterprise ROI",
-  "State-Space Models (SSM) vs. Transformers: Finding the efficiency sweet spot for long context",
-  "Quantization-aware fine-tuning: Running frontier-grade logic on local edge hardware",
-  "Model-distillation pipelines: Transforming giant model knowledge into agile local assets",
+  // RAG & Knowledge Systems
+  "Context engineering vs prompt engineering: The next evolution",
 
-  // --- 4. Reliability, Evaluation & AI Engineering ---
-  "AI Reliability Engineering (ARE): Treating hallucinations as a system-stability problem",
-  "Observability 2.0: Moving beyond logs to semantic monitoring and trace-based debugging",
-  "Automated evaluation (Auto-Eval): Using 'Judge' models to scale quality control",
-  "Versioning in non-deterministic systems: How to track 'logic drift' in prompt-based code",
-  "Failure-aware design: Engineering systems that fail gracefully instead of confidently",
+  // Reliability & Evaluation
+  "Failure-aware AI systems: Designing for graceful degradation, not blind confidence",
+  "Determinism in LLMs: Is reproducibility even achievable?",
+  "Trust boundaries in AI systems: Where should you never rely on an LLM?",
 
-  // --- 5. Data, RAG & Knowledge Fabric ---
-  "Agentic RAG: Transforming static retrieval into a dynamic, governed knowledge fabric",
-  "Synthetic data generation: Solving the data-exhaustion problem for niche domain training",
-  "Vector-graph hybrids: Why RAG needs structured relationships to answer complex queries",
+  // Economics & Scaling
+  "FinOps for GenAI: Managing token economics at scale",
+  "Cost vs capability: When does a cheaper model outperform a smarter one?",
+  "Latency vs intelligence trade-offs in real-time AI systems",
 
-  // --- 6. Governance, Ethics & Sovereignty ---
-  "Sovereign AI: Why data residency and local infrastructure are the new 'moats'",
-  "The EU AI Act & Technical Compliance: Automated audit trails for high-risk deployments",
-  "Explainability vs. Capability: Are we building systems that are too complex to be auditable?",
-  "The ethics of synthetic humans: Digital twins and the boundaries of identity in 2026",
+  // AGI & Future Direction
+  "AGI timelines: Are we closer than expected or fundamentally stuck?",
+  "From copilots to autopilots: When should AI take full control?",
+  "Recursive self-improvement: Hype or inevitable reality?",
+  "Embodied AI: Why intelligence may require interaction with the physical world",
+  "Cognitive architectures: Are we missing the bigger picture beyond LLMs?",
 
-  // --- 7. Business Logic & Organizational Impact ---
-  "The Productivity Paradox: Why raw token output does not equal business value",
-  "AI-native workflows: Redesigning business logic when the 'middle man' is an agent",
-  "FinOps for GenAI: Managing the unit economics of autonomous agent tokens",
-  "The Iteration Moat: Why speed of feedback loops beats model size in production"
+  // Ethics, Risk & Society
+  "AI alignment in practice: Can we really control autonomous systems?",
+
+  // Cutting-edge & Debatable
+  "Is prompt engineering a temporary skill or a foundational discipline?",
+  "Do LLMs actually reason or just simulate reasoning convincingly?",
 ];
 
 
@@ -254,23 +253,53 @@ async function generateAndPostToLinkedIn() {
 
     prompt += "Write the final LinkedIn post only.";
 
-const strategyInstruction = `
-  You are writing one production-ready LinkedIn post.
+// const strategyInstruction = `
+//   You are writing one production-ready LinkedIn post.
 
-  ### Internal reasoning policy:
-  - Privately analyze the findings and choose one post archetype: Contrarian, Narrative, Comparison, Practitioners Playbook, or Visionary.
-  - Never reveal analysis, phase labels, archetype selection notes, or scratchpad text.
-  - Never output headings such as STRATEGY PHASE or EXECUTION PHASE.
+//   ### Internal reasoning policy:
+//   - Privately analyze the findings and choose one post archetype: Contrarian, Narrative, Comparison, Practitioners Playbook, or Visionary.
+//   - Never reveal analysis, phase labels, archetype selection notes, or scratchpad text.
+//   - Never output headings such as STRATEGY PHASE or EXECUTION PHASE.
 
-  ### Output requirements:
-  1. DYNAMIC FLOW: Avoid repetitive templates. Mix punchy lines and flowing observations.
-  2. TEXT STYLE: Do not use asterisks (**) for bold or underscores (_) for italics. (The hash symbol # is ONLY permitted for hashtags at the end). Use ALL CAPS sparingly.
-  3. VISUALS: Start with a relevant emoji in the opening line. Use emojis naturally throughout.
-  4. FORMAT: 1-2 sentence paragraphs. Sound organic and more human. Use clear, direct language. 
-  5. CONSTRAINTS: Under 1000 characters total. No intro/conclusion filler. 
-  6. HOOK + CTA: Begin with a curiosity hook and end with one specific thought-provoking question.
-  7. HASHTAGS (MANDATORY): End the post with exactly 3-5 relevant hashtags (e.g., #GenAI #AI #TechTrends). This is a hard requirement.
-  `;
+//   ### Output requirements:
+//   1. DYNAMIC FLOW: Avoid repetitive templates. Mix punchy lines and flowing observations.
+//   2. TEXT STYLE: Do not use asterisks (**) for bold or underscores (_) for italics. (The hash symbol # is ONLY permitted for hashtags at the end). Use ALL CAPS sparingly.
+//   3. VISUALS: Start with a relevant emoji in the opening line. Use emojis naturally throughout.
+//   4. FORMAT: 1-2 sentence paragraphs. Sound organic and more human. Use clear, direct language. 
+//   5. CONSTRAINTS: Under 1000 characters total. No intro/conclusion filler. 
+//   6. HOOK + CTA: Begin with a curiosity hook and end with one specific thought-provoking question.
+//   7. HASHTAGS (MANDATORY): End the post with exactly 3-5 relevant hashtags (e.g., #GenAI #AI #TechTrends). This is a hard requirement.
+//   `;
+
+const strategyInstruction = ` 
+You are writing one production-ready LinkedIn post.
+
+### Internal reasoning policy:
+- Privately analyze the findings and choose one post archetype: Contrarian, Narrative, Comparison, Practitioners Playbook, or Visionary.
+- Never reveal analysis, phase labels, archetype selection notes, or scratchpad text.
+- Never output headings such as STRATEGY PHASE or EXECUTION PHASE.
+
+### Output requirements:
+1. DYNAMIC FLOW: Avoid repetitive templates. Mix punchy lines and flowing observations.
+2. TEXT STYLE: Do not use asterisks (**) for bold or underscores (_) for italics. (The hash symbol # is ONLY permitted for hashtags at the end). Use ALL CAPS sparingly.
+3. VISUALS: Start with a relevant emoji in the opening line. Use emojis naturally throughout.
+4. FORMAT: 1-2 sentence paragraphs. Sound organic and more human. Use clear, direct language. 
+5. CONSTRAINTS: Main post must be under 1000 characters. (Hashtags are NOT included in this limit.
+6. HOOK + CTA: Begin with a curiosity hook and end with one specific thought-provoking question.
+
+### HASHTAGS (STRICT OUTPUT CONTRACT):
+- MUST appear on a NEW LINE after the post.
+- MUST include 3 to 5 relevant hashtags.
+- MUST NOT include any text before or after them.
+- This is a NON-OPTIONAL requirement. If hashtags are missing, the output is invalid.
+
+### Final Output Format:
+
+<Post content>
+
+#Tag1 #Tag2 #Tag3
+`;
+
 
     console.log(`Auto-post: Generating text for topic: ${selectedTopic}...`);
     let textResponse = await generateTextWithRetry(ai, {
@@ -344,63 +373,56 @@ const strategyInstruction = `
     // `;    
 
 const imagePrompt = `
-    An engaging, high-quality conceptual image for a LinkedIn post about ${selectedTopic}. 
-    The post discusses: ${text.substring(0, 500)}...
+An engaging, high-quality conceptual image for a LinkedIn post about ${selectedTopic}. 
+The post discusses: ${text.substring(0, 500)}...
 
-    ### CRITICAL: Framing & Composition Instructions (REQUIRED):
-    - **Use Prominent Composition:** The central graphic elements must be large, dominant, and the clear hero of the image.
-    - **Maximize Canvas Use:** Avoid vast, empty voids in the background. If the background is light, use textures or subtle background layers that connect to the main subject. If the background is dark, use deep atmospheric depth, but do not leave it blank.
-    - **Allow Elements to Bleed:** In all styles except Style 2 (Flowchart), at least some key elements should extend to, or bleed off, the edge of the frame to suggest a larger system and fill the space.
+### CRITICAL: ANTI-REPETITION DIRECTIVE
+- Avoid generic engineering drawings, flat diagrams, basic flowcharts, or simple node-link graphs unless absolutely essential.
+- Each generated image must feel visually distinct from typical AI/tech illustrations.
+- Prioritize novelty, depth, and originality over safe patterns.
 
-    ### CRITICAL: Graphic Style Decision Logic (REQUIRED):
-    Analyze the intent of ${selectedTopic} and the post text to select **exactly ONE** of the following visual styles. Do not mix styles. 
+### CRITICAL: VISUAL DIVERSITY ENGINE (MANDATORY)
+Before generating, internally randomize and apply:
+- Perspective: macro / wide-angle / top-down / cinematic close-up
+- Environment: physical space / abstract void / studio / architectural / natural fusion
+- Material: glass / metal / liquid / holographic / particles / energy fields
+- Lighting: soft studio / neon glow / volumetric light / high contrast / ambient diffusion
 
-    #### STYLE 1: The Technical Draft (Blueprint/Architecture)
-    - **Use For Topics Like:** "Architecture", "Systems design", "Infrastructure", "Quantization".
-    - **Visual Style:** Large-scale technical drafting. This should not be a small diagram, but a sprawling, detailed blueprint that feels like it covers the entire frame.
-    - **Details:** Massive isometric wireframes of software stacks, exploded views of core components, technical annotation lines. The elements should extend right to the edges of the canvas.
-    - **Composition:** Wide-angle view, showing the blueprint spread across a vast desk, but the wireframes themselves are large and fill 90% of the viewable area.
-    - **Color Palette:** Architectural Blue lines on White/Cream. Minimalist but *full*.
-    - **Vibe:** Scale, precision, complexity.
+### CRITICAL: METAPHOR SELECTION
+Do NOT default to diagrams. Represent the concept using ONE strong metaphor:
+- Physical systems (machines, structures, layered constructs)
+- Spatial metaphors (corridors, networks as environments, expanding spaces)
+- Abstract forms (fields, distortions, gravity wells, signal flows)
+- Human-tech interaction (without literal faces or robots)
 
-    #### STYLE 2: The Logical Sequence (Process Flow/Workflow)
-    - **Use For Topics Like:** "pipelines", "models", "Chain of Thought", "Human-in-the-loop", "CI/CD".
-    - **Visual Style:** Dominant 3D infographic flowchart.
-    - **Details:** The flowchart nodes (geometric shapes) are massive and take up significant screen real estate. The connections are clear and robust. The flow itself is the entire image.
-    - **Composition:** A logical flow (left-to-right or top-to-bottom) where the individual steps are large enough to see detail, but framed tightly to fill the horizontal canvas.
-    - **Color Palette:** Professional gradients (Corporate Blue, Mint Green, Soft Gray) against a bright, well-lit studio background. Use depth of field to keep the flow filling the space without cluttering it.
-    - **Vibe:** Logic, sequence, and large-scale optimization.
+### STYLE SELECTION (Flexible, NOT rigid)
+Choose a dominant style based on intent, but allow creative blending if needed:
 
-    #### STYLE 3: The Data Web (Knowledge Graph/Network)
-    - **Use For Topics Like:** "Memory", "Vector-graph hybrids", "RAG", "Data-exhuastion", "Domain-specific models".
-    - **Visual Style:** Complex Network Diagram that feels immersive.
-    - **Details:** Not a single small network cluster, but a visualization that surrounds the viewer. Hundreds of small nodes forming dense, massive clusters that sprawl from edge to edge.
-    - **Composition:** Use an extremely deep depth of field. The nodes closest to the camera are blurry and bleed off the frame, while the central network logic is in sharp focus, creating a completely filled and immersive data landscape.
-    - **Color Palette:** Shades of blue (sky, electric, deep) on a pure white or very light gray background.
-    - **Vibe:** Interconnectedness, scale, and infinite complexity.
+1. Architectural / Systemic (only if truly required)
+2. Process Flow (avoid flat diagrams — make it spatial and immersive)
+3. Network / Data Field (dense, atmospheric, not simplistic nodes)
+4. Conceptual 3D Metaphor (default)
+5. Cinematic Deep Tech (for tension, risk, ethics)
 
-    #### STYLE 4: The Lucid Innovation (Modern 3D Concept) [Default for abstract innovation]
-    - **Use For Topics Like:** "Productivity paradox", "AI-native organizations", "expertise", "Future of jobs".
-    - **Visual Style:** Minimalist, prominent 3D metaphor. The single subject must dominate the frame.
-    - **Details:** Example: A single, gigantic floating polished silver and glass metaphor for "Augmentation." Or a large, highly detailed human silhouette interacting with massive luminous interfaces.
-    - **Composition:** Tight framing on the subject. The background is airy and bright, but the central metaphor takes up at least 60-70% of the canvas.
-    - **Color Palette:** Pastels (Lavender, Soft Gold, Teal) on a pure white studio environment.
-    - **Vibe:** Clarity, optimistic scale, and high-tech utility.
+### COMPOSITION RULES
+- The subject must dominate 60–80% of the frame
+- Avoid empty backgrounds — always add depth, layers, or subtle structures
+- Elements should feel large-scale and immersive
+- Use depth of field and foreground/background layering
 
-    #### STYLE 5: The Deep Tech Midnight (Dark/Cinematic) [Niche/Reserved]
-    - **Use ONLY For Topics Like:** "Cybersecurity", "Ethics", "Explainability issues", "Black Box", "Tension".
-    - **Visual Style:** Close-up, intense, "Cyber-technical."
-    - **Details:** Macro-style composition focusing tightly on one intense, glowing technical core. The surroundings are dark, cinematic obsidian or deep navy, but filled with complex shadows and depth, not empty space.
-    - **Composition:** Tight close-up or macro shot. The core structure is huge in the frame, making the viewer feel the scale and power of the concept.
-    - **Color Palette:** Dominant Dark/Deep tones with single-color neon (e.g., Electric Blue only, or Red only) for intense, high-contrast highlights.
-    - **Vibe:** Mystery, deep analysis, risk, and power.
+### AVOID THESE COMMON FAILURES
+- Tiny centered objects with empty space
+- Repetitive blueprint/grid visuals
+- Basic circles-and-lines diagrams
+- Flat infographic style
+- Overused “AI brain” or glowing orb clichés
 
-    ### General Requirements:
-    - NO literal "Robots" or "Terminators." Use architectural, mathematical, or structural metaphors.
-    - Ensure the edges are crisp and professional (LinkedIn-appropriate).
-    - No text or code inside the image.
-    `;
+### QUALITY BAR
+- Ultra-detailed, high depth, premium rendering
+- LinkedIn-appropriate, clean, and sharp
+- No text, no labels, no code
 
+`;
 
     const imageResponse = await ai.models.generateContent({
       model: GEMINI_IMAGE_MODEL,
