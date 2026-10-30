@@ -1,0 +1,210 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 540" width="1000" height="540">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#0a0f1d"/>
+    </linearGradient>
+
+    <!-- Card Gradients -->
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#141d2e"/>
+    </linearGradient>
+
+    <linearGradient id="activeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+
+    <linearGradient id="linkedInGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a66c2"/>
+      <stop offset="100%" stop-color="#004182"/>
+    </linearGradient>
+
+    <!-- Drop Shadows -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+
+    <filter id="badgeShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+
+    <!-- Marker Arrow -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrowMuted" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 700; fill: #f8fafc; font-size: 24px; }
+    .subtitle { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 400; fill: #94a3b8; font-size: 13px; }
+    .card-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 700; fill: #f1f5f9; font-size: 14px; }
+    .card-sub { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 600; fill: #38bdf8; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .card-desc { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 400; fill: #cbd5e1; font-size: 11.5px; line-height: 16px; }
+    .step-pill { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 700; fill: #ffffff; font-size: 10px; }
+    .footer-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 500; fill: #64748b; font-size: 11px; }
+    .connector-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 600; fill: #7dd3fc; font-size: 10px; }
+  </style>
+
+  <!-- Canvas Outer Background -->
+  <rect width="1000" height="540" rx="16" fill="url(#bgGrad)"/>
+  <rect width="998" height="538" x="1" y="1" rx="15" fill="none" stroke="#334155" stroke-width="1.5" stroke-opacity="0.8"/>
+
+  <!-- Subtle Grid Accent -->
+  <g opacity="0.05">
+    <path d="M 0 60 H 1000 M 0 120 H 1000 M 0 180 H 1000 M 0 240 H 1000 M 0 300 H 1000 M 0 360 H 1000 M 0 420 H 1000 M 0 480 H 1000" stroke="#ffffff" stroke-width="1"/>
+    <path d="M 100 0 V 540 M 200 0 V 540 M 300 0 V 540 M 400 0 V 540 M 500 0 V 540 M 600 0 V 540 M 700 0 V 540 M 800 0 V 540 M 900 0 V 540" stroke="#ffffff" stroke-width="1"/>
+  </g>
+
+  <!-- Header Section -->
+  <g transform="translate(45, 45)">
+    <!-- Brand Tag -->
+    <rect x="0" y="0" width="168" height="24" rx="12" fill="#0369a1" fill-opacity="0.25" stroke="#0284c7" stroke-width="1"/>
+    <circle cx="12" cy="12" r="4" fill="#38bdf8"/>
+    <text x="24" y="16" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="600" fill="#38bdf8" font-size="11" letter-spacing="0.5">SYSTEM ARCHITECTURE</text>
+
+    <!-- Main Title & Subtitle -->
+    <text x="0" y="55" class="title">LinkedIn Content Engine Workflow</text>
+    <text x="0" y="76" class="subtitle">From practitioner idea &amp; live web grounding to 1-click publishing via official LinkedIn REST API</text>
+  </g>
+
+  <!-- Connectors (drawn behind cards) -->
+  <!-- Card 1 to Card 2 -->
+  <line x1="210" y1="230" x2="232" y2="230" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Card 2 to Card 3 -->
+  <line x1="400" y1="230" x2="422" y2="230" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Card 3 to Card 4 -->
+  <line x1="590" y1="230" x2="612" y2="230" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Card 4 to Card 5 -->
+  <line x1="780" y1="230" x2="802" y2="230" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 1: Input & Outline -->
+  <g transform="translate(45, 145)" filter="url(#shadow)">
+    <rect width="165" height="175" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.2"/>
+    <rect x="14" y="14" width="56" height="20" rx="10" fill="#0284c7" filter="url(#badgeShadow)"/>
+    <text x="24" y="28" class="step-pill">STEP 1</text>
+    
+    <text x="14" y="54" class="card-sub">TOPIC &amp; ANGLE</text>
+    <text x="14" y="73" class="card-title">User Outline</text>
+    
+    <line x1="14" y1="84" x2="151" y2="84" stroke="#334155" stroke-width="1"/>
+    
+    <text x="14" y="103" class="card-desc">• Custom text outline</text>
+    <text x="14" y="122" class="card-desc">• No random topics</text>
+    <text x="14" y="141" class="card-desc">• Domain keywords</text>
+    <text x="14" y="160" class="card-desc">• Targeted focus</text>
+  </g>
+
+  <!-- Step 2: Gemini Grounding Engine -->
+  <g transform="translate(235, 145)" filter="url(#shadow)">
+    <rect width="165" height="175" rx="12" fill="url(#cardGrad)" stroke="#0284c7" stroke-width="1.5"/>
+    <rect x="14" y="14" width="56" height="20" rx="10" fill="#0369a1" filter="url(#badgeShadow)"/>
+    <text x="24" y="28" class="step-pill">STEP 2</text>
+
+    <text x="14" y="54" class="card-sub">GOOGLE SEARCH</text>
+    <text x="14" y="73" class="card-title">Live Grounding</text>
+    
+    <line x1="14" y1="84" x2="151" y2="84" stroke="#334155" stroke-width="1"/>
+
+    <text x="14" y="103" class="card-desc">• Live web search</text>
+    <text x="14" y="122" class="card-desc">• Real release notes</text>
+    <text x="14" y="141" class="card-desc">• Industry benchmarks</text>
+    <text x="14" y="160" class="card-desc">• Zero hallucinations</text>
+  </g>
+
+  <!-- Step 3: Practitioner Synthesizer -->
+  <g transform="translate(425, 145)" filter="url(#shadow)">
+    <rect width="165" height="175" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.2"/>
+    <rect x="14" y="14" width="56" height="20" rx="10" fill="#0284c7" filter="url(#badgeShadow)"/>
+    <text x="24" y="28" class="step-pill">STEP 3</text>
+
+    <text x="14" y="54" class="card-sub">GEMINI ENGINE</text>
+    <text x="14" y="73" class="card-title">Post Synthesizer</text>
+    
+    <line x1="14" y1="84" x2="151" y2="84" stroke="#334155" stroke-width="1"/>
+
+    <text x="14" y="103" class="card-desc">• Max 4 paragraphs</text>
+    <text x="14" y="122" class="card-desc">• 1st-person honest voice</text>
+    <text x="14" y="141" class="card-desc">• Unicode bolding (𝗕𝗼𝗹𝗱)</text>
+    <text x="14" y="160" class="card-desc">• Peer discussion hook</text>
+  </g>
+
+  <!-- Step 4: Media Engine -->
+  <g transform="translate(615, 145)" filter="url(#shadow)">
+    <rect width="165" height="175" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.2"/>
+    <rect x="14" y="14" width="56" height="20" rx="10" fill="#0284c7" filter="url(#badgeShadow)"/>
+    <text x="24" y="28" class="step-pill">STEP 4</text>
+
+    <text x="14" y="54" class="card-sub">VISUAL GENERATOR</text>
+    <text x="14" y="73" class="card-title">Corporate Media</text>
+    
+    <line x1="14" y1="84" x2="151" y2="84" stroke="#334155" stroke-width="1"/>
+
+    <text x="14" y="103" class="card-desc">• Optional image toggle</text>
+    <text x="14" y="122" class="card-desc">• Clean corporate styling</text>
+    <text x="14" y="141" class="card-desc">• 1K / 2K / 4K fidelity</text>
+    <text x="14" y="160" class="card-desc">• Or Text-Only mode</text>
+  </g>
+
+  <!-- Step 5: LinkedIn Publishing -->
+  <g transform="translate(805, 145)" filter="url(#shadow)">
+    <rect width="150" height="175" rx="12" fill="url(#cardGrad)" stroke="#0a66c2" stroke-width="1.5"/>
+    <rect x="14" y="14" width="56" height="20" rx="10" fill="url(#linkedInGrad)" filter="url(#badgeShadow)"/>
+    <text x="24" y="28" class="step-pill">STEP 5</text>
+
+    <text x="14" y="54" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="600" fill="#38bdf8" font-size="11" letter-spacing="0.5">DIRECT API</text>
+    <text x="14" y="73" class="card-title">LinkedIn Post</text>
+    
+    <line x1="14" y1="84" x2="136" y2="84" stroke="#334155" stroke-width="1"/>
+
+    <text x="14" y="103" class="card-desc">• OAuth 2.0 Auth</text>
+    <text x="14" y="122" class="card-desc">• /v2/assets register</text>
+    <text x="14" y="141" class="card-desc">• /v2/ugcPosts payload</text>
+    <text x="14" y="160" class="card-desc">• Live feed published</text>
+  </g>
+
+  <!-- Bottom Row: Supporting Subsystems -->
+  <g transform="translate(45, 345)">
+    <!-- Subsystem 1: Brainstorming Assistant -->
+    <rect x="0" y="0" width="290" height="110" rx="10" fill="#141d2e" stroke="#1e293b" stroke-width="1.2"/>
+    <circle cx="24" cy="24" r="10" fill="#0284c7" fill-opacity="0.2"/>
+    <text x="24" y="28" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="#38bdf8" font-size="12">💬</text>
+    <text x="44" y="28" class="card-title" font-size="13px">Ideation Chatbot</text>
+    <text x="24" y="54" class="card-desc">Interactive conversational assistant to</text>
+    <text x="24" y="72" class="card-desc">brainstorm topics, critique drafts, and</text>
+    <text x="24" y="90" class="card-desc">refine technical perspectives.</text>
+
+    <!-- Subsystem 2: Feed Simulator & In-UI Editor -->
+    <rect x="310" y="0" width="290" height="110" rx="10" fill="#141d2e" stroke="#1e293b" stroke-width="1.2"/>
+    <circle cx="334" cy="24" r="10" fill="#0284c7" fill-opacity="0.2"/>
+    <text x="334" y="28" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="#38bdf8" font-size="12">👁️</text>
+    <text x="354" y="28" class="card-title" font-size="13px">Live Preview &amp; Editor</text>
+    <text x="334" y="54" class="card-desc">Direct text editor with character counter,</text>
+    <text x="334" y="72" class="card-desc">Unicode formatting preservation, and</text>
+    <text x="334" y="90" class="card-desc">exact LinkedIn desktop/mobile layout.</text>
+
+    <!-- Subsystem 3: Local & Secure Architecture -->
+    <rect x="620" y="0" width="290" height="110" rx="10" fill="#141d2e" stroke="#1e293b" stroke-width="1.2"/>
+    <circle cx="644" cy="24" r="10" fill="#10b981" fill-opacity="0.2"/>
+    <text x="644" y="28" text-anchor="middle" font-family="sans-serif" font-weight="bold" fill="#34d399" font-size="12">🔒</text>
+    <text x="664" y="28" class="card-title" font-size="13px">Secure &amp; Credential-Free</text>
+    <text x="644" y="54" class="card-desc">Zero credentials in source control.</text>
+    <text x="644" y="72" class="card-desc">Uses local .env config, httpOnly cookies,</text>
+    <text x="644" y="90" class="card-desc">and direct official OAuth token lifecycle.</text>
+  </g>
+
+  <!-- Footer Info Line -->
+  <g transform="translate(45, 495)">
+    <circle cx="6" cy="6" r="4" fill="#10b981"/>
+    <text x="18" y="10" class="footer-text">Production Architecture — Modular Node.js / React 19 / Gemini API Grounding / LinkedIn REST v2</text>
+  </g>
+</svg>
